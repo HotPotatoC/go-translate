@@ -32,9 +32,9 @@ func main() {
 		os.Exit(1)
 	}
 
+	strChan := make(chan string)
 	wg.Add(1)
 
-	strChan := make(chan string)
 	reqBody := &cli.RequestBody{
 		SourceLang: sourceLang,
 		TargetLang: targetLang,
