@@ -2,10 +2,16 @@
 
 Google translate via CLI made with Go
 
+## Installation
+
+```
+$ go install github.com/HotPotatoC/go-translate
+```
+
 ## Overview
 
 ```bash
-Usage: translate [options]
+Usage: go-translate [options]
 Options:
   -s string
         Source language [en] (default "en")
@@ -18,15 +24,15 @@ Options:
 ## Usage
 
 ```
-$ go run main.go -st "Hello, World\!"
+$ go-translate -st "Hello, World\!"
 Halo, Dunia!
 
-$ go run main.go -t ja -st "Good morning friend"
+$ go-translate -t ja -st "Good morning friend"
 おはよう友達
 
-$ go run main.go -t no -st "I am going to buy a cup of coffee"
+$ go-translate -t no -st "I am going to buy a cup of coffee"
 Jeg skal kjøpe en kopp kaffe
 
-$ go run main.go -s id -t en -st "Apa kabar bro?"
+$ go-translate -s id -t en -st "Apa kabar bro?"
 How are you, brother?
 ```
