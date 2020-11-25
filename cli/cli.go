@@ -20,8 +20,6 @@ const translateUrl = "https://translate.googleapis.com/translate_a/single"
 
 // RequestTranslate creates a request to the google translate api
 func RequestTranslate(body *RequestBody, str chan string, wg *sync.WaitGroup) {
-	defer wg.Done()
-
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", translateUrl, nil)
 
@@ -34,34 +32,41 @@ func RequestTranslate(body *RequestBody, str chan string, wg *sync.WaitGroup) {
 	req.URL.RawQuery = query.Encode()
 
 	if err != nil {
-		log.Fatalf("There was a problem: %s", err)
+		log.Fatalf("1 There was a problem: %s", err)
 	}
 
 	res, err := client.Do(req)
 	if err != nil {
-		log.Fatalf("There was a problem: %s", err)
+		log.Fatalf("2 There was a problem: %s", err)
 	}
 	defer res.Body.Close()
 
+	if res.StatusCode == http.StatusTooManyRequests {
+		str <- "You have been rate limited, Try again later."
+		wg.Done()
+		return
+	}
+
 	parsedJson, err := gabs.ParseJSONBuffer(res.Body)
 	if err != nil {
-		log.Fatalf("There was a problem - %s", err)
+		log.Fatalf("3 There was a problem - %s", err)
 	}
 
 	nestOne, err := parsedJson.ArrayElement(0)
 	if err != nil {
-		log.Fatalf("There was a problem - %s", err)
+		log.Fatalf("4 There was a problem - %s", err)
 	}
 
 	nestTwo, err := nestOne.ArrayElement(0)
 	if err != nil {
-		log.Fatalf("There was a problem - %s", err)
+		log.Fatalf("5 There was a problem - %s", err)
 	}
 
 	translatedStr, err := nestTwo.ArrayElement(0)
 	if err != nil {
-		log.Fatalf("There was a problem - %s", err)
+		log.Fatalf("6 There was a problem - %s", err)
 	}
 
 	str <- translatedStr.Data().(string)
+	wg.Done()
 }

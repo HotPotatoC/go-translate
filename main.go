@@ -47,6 +47,6 @@ func main() {
 
 	fmt.Printf("%s\n", processedStr)
 
-	wg.Wait()
 	close(strChan)
+	wg.Wait()
 }
