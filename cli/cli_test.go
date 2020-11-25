@@ -32,6 +32,7 @@ func TestRequestTranslate(t *testing.T) {
 		}, ch, &wg)
 		res := <-ch
 		if res == "You have been rate limited, Try again later." {
+			t.Log(res)
 			break
 		}
 
